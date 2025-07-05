@@ -1,0 +1,16 @@
+# Ignore compiled CSS
+admin/src/output.css
+
+# Tailwind or build cache
+node_modules/
+*.log
+.DS_Store
+
+# System files
+Thumbs.db
+.vscode/
+.env
+
+# Ignore uploads if needed
+admin/upload/*
+!admin/upload/.gitkeep
