@@ -1,10 +1,4 @@
-<?php
-session_start();
-if (!$_SESSION['is_loggedin']) {
-    header("Location: login.php");
-    exit();
-}
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">

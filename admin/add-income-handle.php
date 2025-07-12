@@ -8,16 +8,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $amount      = $_POST['amount'];
-$description = $_POST['description'];
+$source = $_POST['source'];
 
 include 'db-conn.php';
 
-$query = "INSERT INTO income (amount, description, date_added) VALUES (?, ?, NOW())";
+$query = "INSERT INTO income (amount, source, created_at) VALUES (?, ?, NOW())";
 $stmt  = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, "ds", $amount, $description);
+mysqli_stmt_bind_param($stmt, "ds", $amount, $source);
 mysqli_stmt_execute($stmt);
 
 // Redirect back to the Add Income page (or to dashboard)
 header("Location: dashboard.php?path=add-income");
 exit();
 ?>
+

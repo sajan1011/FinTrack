@@ -11,29 +11,32 @@ $path = $_GET['path'] ?? 'dashboard';
 
 include 'db-conn.php';
 
-// Fetch total income, expense, savings
+// Always fetch income, expense and savings
+$income_query = "SELECT SUM(amount) AS total_income FROM income";
+$expense_query = "SELECT SUM(amount) AS total_expense FROM expenses";
+
+$income_result = mysqli_query($conn, $income_query);
+$expense_result = mysqli_query($conn, $expense_query);
+
+$income = mysqli_fetch_assoc($income_result)['total_income'] ?? 0;
+$expense = mysqli_fetch_assoc($expense_result)['total_expense'] ?? 0;
+$savings = $income - $expense;
+
+// Only fetch transactions if on dashboard
+$data = [];
 if ($path === 'dashboard') {
-    $income_query = "SELECT SUM(amount) AS total_income FROM income";
-    $expense_query = "SELECT SUM(amount) AS total_expense FROM expenses";
-
-    $income_result = mysqli_query($conn, $income_query);
-    $expense_result = mysqli_query($conn, $expense_query);
-
-    $income = mysqli_fetch_assoc($income_result)['total_income'] ?? 0;
-    $expense = mysqli_fetch_assoc($expense_result)['total_expense'] ?? 0;
-    $savings = $income - $expense;
-
-    // Fetch all transactions
-    $tx_query = "SELECT * FROM (SELECT id, 'Income' AS type, source AS category, amount, created_at FROM income
+    $tx_query = "SELECT * FROM (
+                    SELECT id, 'Income' AS type, source AS category, amount, created_at FROM income
                     UNION ALL
-                SELECT id, 'Expense' AS type, category, amount, created_at FROM expenses) AS transactions ORDER BY created_at DESC";
+                    SELECT id, 'Expense' AS type, category, amount, created_at FROM expenses
+                ) AS transactions ORDER BY created_at DESC";
     $tx_result = mysqli_query($conn, $tx_query);
-
-    $data= [];
     while ($row = mysqli_fetch_assoc($tx_result)) {
         $data[] = $row;
     }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -102,25 +105,35 @@ if ($path === 'dashboard') {
                           <th class="px-6 py-3 text-center">Category/Source</th>
                           <th class="px-6 py-3 text-center">Amount (Rs)</th>
                           <th class="px-6 py-3 text-center">Date</th>
+                          <th class="px-6 py-3 text-center">Action</th>
+
                       </tr>
                   </thead>
                   <tbody>
-                      <?php if (count($data) > 0): ?>
-                          <?php foreach ($data as $index => $tx): ?>
-                              <tr class="text-center border-t hover:bg-gray-50">
-                                  <td class="py-2 px-4 border"><?= $index + 1 ?></td>
-                                  <td class="py-2 px-4 border font-semibold"><?= htmlspecialchars($tx['type']) ?></td>
-                                  <td class="py-2 px-4 border"><?= htmlspecialchars($tx['category']) ?></td>
-                                  <td class="py-2 px-4 border">Rs. <?= number_format($tx['amount'], 2) ?></td>
-                                  <td class="py-2 px-4 border"><?= date('Y-m-d', strtotime($tx['created_at'])) ?></td>
-                              </tr>
-                          <?php endforeach; ?>
-                      <?php else: ?>
-                          <tr>
-                              <td colspan="5" class="text-center py-4">No transactions found.</td>
-                          </tr>
-                      <?php endif; ?>
-                  </tbody>
+<?php if (count($data) > 0): ?>
+    <?php foreach ($data as $index => $tx): ?>
+        <tr class="text-center border-t hover:bg-gray-50">
+            <td class="py-2 px-4 border"><?= $index + 1 ?></td>
+            <td class="py-2 px-4 border font-semibold"><?= htmlspecialchars($tx['type']) ?></td>
+            <td class="py-2 px-4 border"><?= htmlspecialchars($tx['category']) ?></td>
+            <td class="py-2 px-4 border">Rs. <?= number_format($tx['amount'], 2) ?></td>
+            <td class="py-2 px-4 border"><?= date('Y-m-d', strtotime($tx['created_at'])) ?></td>
+            <td class="py-2 px-4 border">
+                <form action="delete-transaction.php" method="POST" onsubmit="return confirm('Delete this transaction?');">
+                    <input type="hidden" name="id" value="<?= $tx['id'] ?>">
+                    <input type="hidden" name="type" value="<?= $tx['type'] ?>">
+                    <button type="submit" class="text-red-600 hover:underline">🗑️ Delete</button>
+                </form>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+<?php else: ?>
+    <tr>
+        <td colspan="6" class="text-center py-4">No transactions found.</td>
+    </tr>
+<?php endif; ?>
+</tbody>
+
               </table>
           </div>
       <?php elseif ($path === 'add-income'): ?>
