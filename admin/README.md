@@ -17,12 +17,12 @@
 ## 📸 Screenshots
 
 ### 📥 Login Page
-![Login Screenshot](admin\upload/login.png)
+![Login Screenshot](admin/upload/login.png)
 
 ### 🧾 Dashboard 
-![Dashboard Screenshot](admin\upload\dashboard.png)
+![Dashboard Screenshot](admin/upload/dashboard.png)
 
-> ⚠️ Place these screenshot files inside the `admin/upload/` folder and use correct filenames. Update the path above if different.
+> ⚠️ Make sure these screenshot files are correctly placed inside the `admin/upload/` folder and committed to the repo.
 
 ---
 
