@@ -1,6 +1,3 @@
-# Ignore compiled CSS
-admin/src/output.css
-
 # Tailwind or build cache
 node_modules/
 *.log
@@ -11,6 +8,4 @@ Thumbs.db
 .vscode/
 .env
 
-# Ignore uploads if needed
-admin/upload/*
-!admin/upload/.gitkeep
+
