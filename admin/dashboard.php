@@ -11,7 +11,7 @@ $path = $_GET['path'] ?? 'dashboard';
 
 include 'db-conn.php';
 
-// Always fetch income, expense and savings
+//fetch income, expense and savings
 $income_query = "SELECT SUM(amount) AS total_income FROM income";
 $expense_query = "SELECT SUM(amount) AS total_expense FROM expenses";
 
@@ -20,16 +20,14 @@ $expense_result = mysqli_query($conn, $expense_query);
 
 $income = mysqli_fetch_assoc($income_result)['total_income'] ?? 0;
 $expense = mysqli_fetch_assoc($expense_result)['total_expense'] ?? 0;
+
 $savings = $income - $expense;
 
-// Only fetch transactions if on dashboard
 $data = [];
 if ($path === 'dashboard') {
-    $tx_query = "SELECT * FROM (
-                    SELECT id, 'Income' AS type, source AS category, amount, created_at FROM income
+    $tx_query = "SELECT * FROM (SELECT id, 'Income' AS type, source AS category, amount, created_at FROM income
                     UNION ALL
-                    SELECT id, 'Expense' AS type, category, amount, created_at FROM expenses
-                ) AS transactions ORDER BY created_at DESC";
+                 SELECT id, 'Expense' AS type, category, amount, created_at FROM expenses) AS transactions ORDER BY created_at DESC";
     $tx_result = mysqli_query($conn, $tx_query);
     while ($row = mysqli_fetch_assoc($tx_result)) {
         $data[] = $row;
@@ -56,27 +54,23 @@ if ($path === 'dashboard') {
       <img src="upload/logo.png" alt="FinTrack Logo" class="h-24 w-auto object-contain" />
     </div>
 
-    <!-- Dashboard -->
+    
     <a href="?path=dashboard" class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-200 <?= $path === 'dashboard' ? 'bg-gray-100 font-semibold' : '' ?>">
-      <!-- Dashboard icon -->
+      
       <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 4v6m-4-6v6M5 10v10h14V10" />
       </svg>
       <span>Dashboard</span>
     </a>
 
-    <!-- Add Income (+) -->
     <a href="?path=add-income" class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-200 <?= $path === 'add-income' ? 'bg-gray-300 font-semibold' : '' ?>">
-      <!-- Plus icon -->
       <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
       </svg>
       <span>Add Income</span>
     </a>
 
-    <!-- Add Expense (-) -->
     <a href="?path=add-expense" class="flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-200 <?= $path === 'add-expense' ? 'bg-gray-300 font-semibold' : '' ?>">
-      <!-- Minus icon -->
       <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
       </svg>
@@ -84,14 +78,18 @@ if ($path === 'dashboard') {
     </a>
   </aside>
 
-  <!-- Main: navbar + content -->
-  <div class="flex flex-col flex-1">
-    <nav class="flex justify-between items-center bg-white shadow px-6 py-4 border-b border-gray-200">
-      <h1 class="text-lg font-semibold text-gray-700">💰 Savings: Rs. <?= number_format($savings, 2) ?></h1>
-      <a href="logout-handle.php" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-sm font-medium">
-        Logout
-      </a>
-    </nav>
+  <!-- navbar and  content part  -->
+<div class="flex flex-col flex-1">
+  <nav class="flex justify-between items-center bg-white shadow px-6 py-4 border-b border-gray-200">
+    <h1 class="text-lg font-semibold text-gray-700">💰 Savings: Rs. <?= number_format($savings, 2) ?></h1>
+    <a href="logout-handle.php" class="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-sm font-medium">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+      </svg>
+      Logout
+    </a>
+  </nav>
+
 
     <main class="flex-1 p-8 overflow-y-auto">
       <?php if ($path === 'dashboard'): ?>

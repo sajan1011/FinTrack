@@ -1,6 +1,5 @@
 
 <?php 
-// add-income-handle.php
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: dashboard.php');
@@ -17,7 +16,6 @@ $stmt  = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param($stmt, "ds", $amount, $source);
 mysqli_stmt_execute($stmt);
 
-// Redirect back to the Add Income page (or to dashboard)
 header("Location: dashboard.php?path=add-income");
 exit();
 ?>

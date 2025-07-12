@@ -17,10 +17,8 @@ $error = $_GET['error'] ?? null;
 </head>
 <body class="bg-gradient-to-r from-[#e2e6ec] to-[#9a9dd8] h-screen flex items-center justify-center">
 
-  <!-- OUTER CONTAINER -->
   <div class="w-[70%] max-w-5xl h-[500px] bg-white shadow-2xl rounded-3xl overflow-hidden flex relative">
 
-    <!-- LEFT SIDE: WHITE LOGIN FORM  -->
     <div class="w-[50%] p-10 flex flex-col justify-center z-10">
       <div class="flex justify-center mb-6">
         <img src="upload/logo.png" alt="FinTrack Logo" class="h-20">
@@ -54,7 +52,6 @@ $error = $_GET['error'] ?? null;
       </form>
     </div>
 
-    <!-- RIGHT SIDE: BLUE GRADIENT PANEL -->
     <div class="w-[50%] bg-gradient-to-br from-indigo-500 via-indigo-600 to-indigo-700 flex flex-col justify-center items-center text-white p-6 rounded-l-[100px]">
       <h2 class="text-3xl font-bold mb-3 text-center">Welcome to FinTrack</h2>
       <p class="text-sm text-indigo-100 text-center leading-relaxed">
