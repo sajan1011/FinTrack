@@ -17,7 +17,7 @@
 ## 📸 Screenshots
 
 ### 📥 Login Page
-![Login Screenshot](admin\upload\login.png)
+![alt text](admin/upload/login.png)
 
 ### 🧾 Dashboard 
 ![Dashboard Screenshot](admin\upload\dashboard.png)

@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
  exit();
 }
 
-$amount      = $_POST['amount'];
+$amount   = $_POST['amount'];
 $category = $_POST['category'];
 
 include 'db-conn.php';
