@@ -25,6 +25,30 @@
 > ⚠️ Make sure these screenshot files are correctly placed inside the `admin/upload/` folder and committed to the repo.
 
 ---
+## 📁 Project Folder Structure
+
+```bash
+FinTrack/
+├── admin/
+│   ├── add-expense.php
+│   ├── add-expense-handle.php
+│   ├── add-income.php
+│   ├── add-income-handle.php
+│   ├── dashboard.php
+│   ├── db-conn.php
+│   ├── login.php
+│   ├── login-handle.php
+│   ├── logout.php
+│   ├── logout-handle.php
+│   ├── upload/
+│   │   ├── logo.png
+│   │   ├── login.png
+│   │   ├── dashboard.png 
+│   └── src/
+│       ├── input.css
+│       └── output.css
+└── README.md
+```
 
 ## 🗄️ Database Structure (MySQL)
 
